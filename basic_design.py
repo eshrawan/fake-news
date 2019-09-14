@@ -18,6 +18,8 @@ z.extractall()
 
 basepath = '.'
 
+#sklearn is the main ML package used in this program
+
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import precision_recall_fscore_support
 from sklearn.metrics import accuracy_score
@@ -30,7 +32,7 @@ with open(os.path.join(basepath, 'train_val_data.pkl'), 'rb') as f:
 #print('Number of train examples:', len(train_data))
 #print('Number of val examples:', len(val_data))
 
-#basically right now i'm deciding what factors to select. my approach is to test
+#this class is to decide and judge individual factors. my approach is to test
 #each method individually and work to aggregate it? my research shows the following
 #methods are popular for NLP Analysis
 
@@ -58,3 +60,38 @@ def scrape_description(url):
 #print(scrape_description('google.com'))
 
 #implementation of a bag of words model?
+
+#implementation on enitre html text: too much time.
+
+def get_descriptions_from_data(data):
+  # A dictionary mapping from url to description for the websites in
+  # train_data.
+  descriptions = []
+  for site in tqdm(data):
+    url, html, label = site
+    descriptions.append(get_description_from_html(html))
+  return descriptions
+
+train_descriptions = get_descriptions_from_data(train_data)
+train_urls = [url for (url, html, label) in train_data]
+
+#print('\nNYTimes Description:')
+#print(train_descriptions[train_urls.index('nytimes.com')])
+
+#counts the most frequqent words used in website descriptions.
+
+vectorizer = CountVectorizer(max_features=300)
+
+vectorizer.fit(train_descriptions)
+
+def vectorize_data_descriptions(descriptions, vectorizer):
+  X = vectorizer.transform(descriptions).todense() #transforms data to correct dimensions
+  return X
+
+print('\nPreparing train data...')
+bow_train_X = vectorize_data_descriptions(train_descriptions, vectorizer)
+bow_train_y = [label for url, html, label in train_data]
+
+print('\nPreparing val data...')
+bow_val_X = vectorize_data_descriptions(val_descriptions, vectorizer)
+bow_val_y = [label for url, html, label in val_data]
