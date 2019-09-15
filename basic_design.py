@@ -18,7 +18,7 @@ z.extractall()
 
 basepath = '.'
 
-#sklearn is the main ML package used in this program
+#sklearn is the main ML package used in this program for modelling and accuracy measures
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import precision_recall_fscore_support
@@ -29,8 +29,8 @@ with open(os.path.join(basepath, 'train_val_data.pkl'), 'rb') as f:
   train_data, val_data = pickle.load(f)
 
 #for testing downloaded data
-#print('Number of train examples:', len(train_data))
-#print('Number of val examples:', len(val_data))
+print('Number of train examples:', len(train_data))
+print('Number of val examples:', len(val_data))
 
 #this class is to decide and judge individual factors. my approach is to test
 #each method individually and work to aggregate it? my research shows the following
@@ -40,8 +40,7 @@ with open(os.path.join(basepath, 'train_val_data.pkl'), 'rb') as f:
 #have a descriptor or may be gramatically incorrect
 def get_description_from_html(html):
   soup = bs(html)
-  description_tag = soup.find('meta', attrs={'name':'og:description'}) or soup.find('meta', attrs={'property':'description'}) or
-  soup.find('meta', attrs={'name':'description'})
+  description_tag = soup.find('meta', attrs={'name':'og:description'}) or soup.find('meta', attrs={'property':'description'}) or soup.find('meta', attrs={'name':'description'})
   if description_tag:
     description = description_tag.get('content') or ''
   else: # If there is no description, return empty string.
@@ -56,8 +55,8 @@ def scrape_description(url):
   description = get_description_from_html(html)
   return description
 
-#print('Description of Google.com:')
-#print(scrape_description('google.com'))
+print('Description of Google.com:')
+print(scrape_description('google.com'))
 
 #implementation of a bag of words model?
 
@@ -75,8 +74,10 @@ def get_descriptions_from_data(data):
 train_descriptions = get_descriptions_from_data(train_data)
 train_urls = [url for (url, html, label) in train_data]
 
-#print('\nNYTimes Description:')
-#print(train_descriptions[train_urls.index('nytimes.com')])
+val_descriptions = get_descriptions_from_data(val_data)
+
+print('\nNYTimes Description:')
+print(train_descriptions[train_urls.index('nytimes.com')])
 
 #counts the most frequqent words used in website descriptions.
 
