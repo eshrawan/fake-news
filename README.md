@@ -51,8 +51,8 @@ A drawback would be the continuous trial and error involved in determining the r
 4. **COMBINED RESULTS**: a combined result was obtained to show.
 
         Train accuracy 0.974025974025974
-        Val accuracy **0.8932038834951457**
-        Precision: **0.8506493506493507**
+        Val accuracy 0.8932038834951457
+        Precision: 0.8506493506493507
         Recall: 0.9290780141843972
         F-Score: 0.8881355932203389
 
