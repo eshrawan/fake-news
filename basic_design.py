@@ -333,7 +333,7 @@ def get_data_pair(url):
 
 
 #enter website link here
-curr_url = "https://local.theonion.com/woman-reminds-friend-she-will-always-be-only-a-phone-ca-1838189359"
+curr_url = "https://local.theonion.com/school-shooter-thankfully-stopped-before-doing-enough-d-1838201037"
 url, html = get_data_pair(curr_url) #since the other functions work with the html and url separately
 
 
