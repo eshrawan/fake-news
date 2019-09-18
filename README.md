@@ -9,8 +9,7 @@ This project attempts to study and combine the different popular methods of NLP 
 It stores these frequencies in a list descriptions [], upon which a logistic regression model is trained and tested.
 
 These are the accuracies obtained for my dataset: with #2002 training values, and #309 testing values.
-                Feature | Result
-       ---------------- | ----------------
+
         Train accuracy | 0.8746253746253746
         Val accuracy | 0.6634304207119741
         Precision | 0.5844748858447488
