@@ -80,7 +80,7 @@ print(train_descriptions[train_urls.index('nytimes.com')])
 
 #counts the most frequqent words used in website descriptions.
 
-#trial and eror
+#trial and error
 vectorizer = CountVectorizer(max_features=300)
 
 vectorizer.fit(train_descriptions)
@@ -99,14 +99,16 @@ val_y = [label for url, html, label in val_data]
 
 model = LogisticRegression()
 
-model.fit(train_X, train_y)
+model.fit(train_X, train_y) #models on the basis of train_x, train_y
 train_y_pred = model.predict(train_X)
+print('Bag of words accuracy measures:\n')
 print('Train accuracy', accuracy_score(train_y, train_y_pred))
 
 val_y_pred = model.predict(val_X)
 print('Val accuracy', accuracy_score(val_y, val_y_pred))
 
 prf = precision_recall_fscore_support(val_y, val_y_pred)
+
 
 print('Precision:', prf[0][1])
 print('Recall:', prf[1][1])
@@ -146,6 +148,7 @@ def cosine_similarity_of_words(word1, word2):
 
   return cosine_similarity(vec1, vec2)
 
+#transforms all words in a description to a vector form and adds it to X[i]
 def glove_transform_data_descriptions(descriptions):
     X = np.zeros((len(descriptions), VEC_SIZE))
     for i, description in enumerate(descriptions):
@@ -173,6 +176,7 @@ glove_val_y = [label for (url, html, label) in val_data]
 model = LogisticRegression()
 model.fit(glove_train_X, glove_train_y)
 train_y_pred = model.predict(glove_train_X)
+print('Glove Vector Accuracy:\n')
 print('Train accuracy', accuracy_score(glove_train_y, train_y_pred))
 
 val_y_pred = model.predict(glove_val_X)
@@ -270,6 +274,7 @@ def keyword_featurizer(url, html):
 train_X, train_y, feature_descriptions = prepare_data(train_data, keyword_featurizer)
 val_X, val_y, feature_descriptions = prepare_data(val_data, keyword_featurizer)
 
+print('Keyword Feautrizer accuracy:\n')
 model = train_and_evaluate_model(train_X, train_y, val_X, val_y)
 
 vectorizer = CountVectorizer(max_features=7)
@@ -298,40 +303,19 @@ def get_word_vector(word):
     except KeyError:
       return None
 
-def glove_transform_data_descriptions(descriptions):
-    X = np.zeros((len(descriptions), VEC_SIZE))
-    for i, description in enumerate(descriptions):
-        found_words = 0.0
-        description = description.strip()
-        for word in description.split():
-            vec = get_word_vector(word)
-            if vec is not None:
-                found_words += 1
-                X[i] += vec
-        if found_words > 0:
-            X[i] /= found_words
-
-    return X
-
-
-glove_train_X = glove_transform_data_descriptions(train_descriptions)
-glove_train_y = [label for (url, html, label) in train_data]
-
-glove_val_X = glove_transform_data_descriptions(val_descriptions)
-glove_val_y = [label for (url, html, label) in val_data]
-
-model = train_and_evaluate_model(glove_train_X, glove_train_y, glove_val_X, glove_val_y)
-
 def combine_features(X_list):
   return np.concatenate(X_list, axis=1)
 
+#combining all three features together
 X_list = [train_X, bow_train_X, glove_train_X]
 val_list = [val_X, bow_val_X, glove_val_X]
 
 combined_train_X = combine_features(X_list)
 combined_val_X = combine_features(val_list)
+print("Combined model accuracy\n")
 model = train_and_evaluate_model(combined_train_X, train_y, combined_val_X, val_y)
 
+#the previous methods were only for testing individually, below all these methods are combined
 def get_data_pair(url):
   if not url.startswith('http'):
       url = 'http://' + url
@@ -350,12 +334,12 @@ def get_data_pair(url):
 
 #enter website link here
 curr_url = "https://local.theonion.com/woman-reminds-friend-she-will-always-be-only-a-phone-ca-1838189359"
-url, html = get_data_pair(curr_url)
+url, html = get_data_pair(curr_url) #since the other functions work with the html and url separately
 
 
 def dict_to_features(features_dict):
   X = np.array(list(features_dict.values())).astype('float')
-  X = X[np.newaxis, :]
+  X = X[np.newaxis, :] #just to make sure the dimensions are correct
   return X
 def featurize_data_pair(url, html):
   keyword_X = dict_to_features(keyword_featurizer(url, html))
