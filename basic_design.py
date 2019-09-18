@@ -75,12 +75,12 @@ train_descriptions = get_descriptions_from_data(train_data)
 train_urls = [url for (url, html, label) in train_data]
 
 val_descriptions = get_descriptions_from_data(val_data)
-
 print('\nNYTimes Description:')
 print(train_descriptions[train_urls.index('nytimes.com')])
 
 #counts the most frequqent words used in website descriptions.
 
+#trial and eror
 vectorizer = CountVectorizer(max_features=300)
 
 vectorizer.fit(train_descriptions)
@@ -90,9 +90,34 @@ def vectorize_data_descriptions(descriptions, vectorizer):
   return X
 
 print('\nPreparing train data...')
-bow_train_X = vectorize_data_descriptions(train_descriptions, vectorizer)
-bow_train_y = [label for url, html, label in train_data]
+train_X = vectorize_data_descriptions(train_descriptions, vectorizer)
+train_y = [label for url, html, label in train_data]
 
 print('\nPreparing val data...')
-bow_val_X = vectorize_data_descriptions(val_descriptions, vectorizer)
-bow_val_y = [label for url, html, label in val_data]
+val_X = vectorize_data_descriptions(val_descriptions, vectorizer)
+val_y = [label for url, html, label in val_data]
+
+model = LogisticRegression()
+
+model.fit(train_X, train_y)
+train_y_pred = model.predict(train_X)
+print('Train accuracy', accuracy_score(train_y, train_y_pred))
+
+val_y_pred = model.predict(val_X)
+print('Val accuracy', accuracy_score(val_y, val_y_pred))
+
+prf = precision_recall_fscore_support(val_y, val_y_pred)
+
+print('Precision:', prf[0][1])
+print('Recall:', prf[1][1])
+print('F-Score:', prf[2][1])
+
+VEC_SIZE = 300
+glove = GloVe(name='6B', dim=VEC_SIZE)
+
+# Returns word vector for word if it exists, else return None.
+def get_word_vector(word):
+    try:
+      return glove.vectors[glove.stoi[word.lower()]].numpy()
+    except KeyError:
+      return None
