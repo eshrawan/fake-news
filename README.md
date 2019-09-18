@@ -9,11 +9,13 @@ This project attempts to study and combine the different popular methods of NLP 
 It stores these frequencies in a list descriptions [], upon which a logistic regression model is trained and tested.
 
 These are the accuracies obtained for my dataset: with #2002 training values, and #309 testing values.
-        * Train accuracy 0.8746253746253746
-        * Val accuracy 0.6634304207119741
-        * Precision: 0.5844748858447488
-        * Recall: 0.9078014184397163
-        * F-Score: 0.7111111111111111
+                Feature | Result
+       ---------------- | ----------------
+        Train accuracy | 0.8746253746253746
+        Val accuracy | 0.6634304207119741
+        Precision | 0.5844748858447488
+        Recall | 0.9078014184397163
+        F-Score| 0.7111111111111111
 
 Some obvious problems with this model led me to combine different features together. One, it cannot gauge sentence structure as every article, conjunction and other "irrelevant" word is deleted by the model based upon the training values. Two, typically with news articles, especially those created to misinform might use vocabulary of real news sources, and frequency alone will not help detect this very easily.
 
