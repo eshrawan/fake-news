@@ -348,6 +348,7 @@ def get_data_pair(url):
   return url_pretty, htmltext
 
 
+#enter website link here
 curr_url = "https://local.theonion.com/woman-reminds-friend-she-will-always-be-only-a-phone-ca-1838189359"
 url, html = get_data_pair(curr_url)
 
