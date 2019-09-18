@@ -121,3 +121,51 @@ def get_word_vector(word):
       return glove.vectors[glove.stoi[word.lower()]].numpy()
     except KeyError:
       return None
+
+#assuming the vectors are formed, their similarity can be shown by their parallel components, a cosine similarity
+
+def cosine_similarity(vec1, vec2):
+  return np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
+
+#word1 = "good"
+#word2 = "better"
+
+#print('Word 1:', word1)
+#print('Word 2:', word2)
+
+def cosine_similarity_of_words(word1, word2):
+  vec1 = get_word_vector(word1)
+  vec2 = get_word_vector(word2)
+
+  if vec1 is None:
+    print(word1, 'is not a valid word. Try another.')
+  if vec2 is None:
+    print(word2, 'is not a valid word. Try another.')
+  if vec1 is None or vec2 is None:
+    return None
+
+  return cosine_similarity(vec1, vec2)
+
+def glove_transform_data_descriptions(descriptions):
+    X = np.zeros((len(descriptions), VEC_SIZE))
+    for i, description in enumerate(descriptions):
+        found_words = 0.0
+        description = description.strip()
+        for word in description.split():
+            vec = get_word_vector(word)
+            if vec is not None:
+                # Increment found_words and add vec to X[i].
+                X[i] += vec
+                found_words += 1
+        # divide the sum by the number of words added, so there is the
+        # average word vector.
+        if found_words > 0:
+            X[i] /= found_words
+
+    return X
+
+glove_train_X = glove_transform_data_descriptions(train_descriptions)
+glove_train_y = [label for (url, html, label) in train_data]
+
+glove_val_X = glove_transform_data_descriptions(val_descriptions)
+glove_val_y = [label for (url, html, label) in val_data]
