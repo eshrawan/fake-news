@@ -49,12 +49,12 @@ These are the accuracies obtained for my dataset: with #2002 training values, an
 A drawback would be the continuous trial and error involved in determining the right keywords to be right accuracy. This method also defeats the purpose of developing a self-learning unsupervised model. What about combining the methods? What kind of results would that yield? Does the model learn to take the best things out of all our approaches and apply them?
 
 4. **COMBINED RESULTS**: a combined result was obtained to show.
-      
-      Train accuracy | 0.974025974025974
-      Val accuracy | **0.8932038834951457**
-      Precision | **0.8506493506493507**
-      Recall | 0.9290780141843972
-      F-Score | 0.8881355932203389
+
+        Train accuracy 0.974025974025974
+        Val accuracy **0.8932038834951457**
+        Precision: **0.8506493506493507**
+        Recall: 0.9290780141843972
+        F-Score: 0.8881355932203389
 
 *Things I'm still working on*:
 1. an input for the user. As of now, one has to hard-code a link of the website into the model. Because of the constant downloading and unzipping of vectors and files, I was not able to figure out a method to allow the user to input anything.
