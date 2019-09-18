@@ -61,6 +61,7 @@ A drawback would be the continuous trial and error involved in determining the r
 2. Working with other models apart from Logistic Regression.
 3. Researching ways to make this into an unsupervised learning model.
 4. Scanning parts of the HTML that might be useful (cutting irrelevant sections through some data mining, probably)
+5. Separating program into different parts, it's all in one class right now, which can be problematic.
 
 Unfortunately, the drawbacks regarding each method is a consequence of us not knowing ourselves about how a computer model can learn the english language. Our language is ever evolving, which makes it a bit more difficult. As is the nature with deepfakes, it can be dangerous for a model like the GPT-2 to be in the open market. This program can identify news articles written by the GPT-2, but these samples are not enough to determine it's efficiency. The sample sizes can always be bigger; we can also test for longer periods of time.
 
